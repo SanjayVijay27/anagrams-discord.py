@@ -1,1 +1,0 @@
-worker: python3 Anagram Solver Py.py
