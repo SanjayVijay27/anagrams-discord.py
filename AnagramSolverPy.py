@@ -197,7 +197,7 @@ async def on_message(message):
                     for j in msgList:
                         await message.channel.send(j)
         
-        elif mList[1].upper == "HELP":
+        elif mList[1].upper() == "HELP":
             await message.channel.send("***!ana [command] [word]***"
             + "\n**combo**: displays all perfect anagrams of a word"
             + "\n**fullScore**: displays the maximum score of a board in Game Pigeon Anagrams"
