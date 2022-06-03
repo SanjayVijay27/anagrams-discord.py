@@ -136,7 +136,7 @@ async def on_message(message):
         return
     
     if mList[0] == "!ana":
-        if mList[1] == "combo":
+        if mList[1].upper() == "COMBO":
             if len(anagram(mList[2], len(mList[2]))) == 0:
                 await message.channel.send("That word has no valid anagrams.")
             else:
@@ -144,22 +144,22 @@ async def on_message(message):
                 if anagram(mList[2], len(mList[2]))[0] == "UNALERTED":
                     await message.channel.send("NUTDEALER\nshhhhhhhh")
 
-        elif mList[1] == "fullScore":
+        elif mList[1].upper() == "FULLSCORE":
             await message.channel.send(str(anaScoreFull(mList[2]) / 1000.0) + "k")
         
-        elif mList[1] == "6Score":
+        elif mList[1].upper() == "6SCORE":
             if len(mList[2]) == 6:
                 await message.channel.send(str(anaScore6(mList[2]) / 1000.0) + "k")
             else:
                 await message.channel.send("That word is not 6 letters long.")
         
-        elif mList[1] == "7Score":
+        elif mList[1].upper() == "7SCORE":
             if len(mList[2]) == 7:
                 await message.channel.send(str(anaScore7(mList[2]) / 1000.0) + "k")
             else:
                 await message.channel.send("That word is not 7 letters long.")
         
-        elif mList[1] == "allWords":
+        elif mList[1].upper() == "ALLWORDS":
             for i in range(3, len(mList[2]) + 1):
                 anas = anagramExact(mList[2], i)
                 splits = int(len(str(anas)) / 2000) + 1
@@ -171,14 +171,14 @@ async def on_message(message):
                         last = len(anas) // splits * (1 + j)
                 for j in anas[last:-1]:
                     msgList[-1].append(j)
-                await message.channel.send(str(i) + " letter words: ")
+                await message.channel.send("**" + str(i) + " letter words**: ")
                 if len(msgList[0]) == 0:
                     await message.channel.send("None")
                 else:
                     for j in msgList:
                         await message.channel.send(j)
         
-        elif mList[1] == "allCombos":
+        elif mList[1].upper() == "ALLCOMBOS":
             for i in range(3, len(mList[2])):
                 anas = findCombo(mList[2], i)
                 splits = int(len(str(anas)) / 2000) + 1
@@ -190,14 +190,20 @@ async def on_message(message):
                         last = len(anas) // splits * (1 + j)
                 for j in anas[last:-1]:
                     msgList[-1].append(j)
-                await message.channel.send(str(i) + " letter combos: ")
+                await message.channel.send("**" + str(i) + " letter combos**: ")
                 if len(msgList[0]) == 0:
                     await message.channel.send("None")
                 else:
                     for j in msgList:
                         await message.channel.send(j)
         
-        elif mList[1] == "help":
-            await message.channel.send("!ana [command] [word]\ncombo: displays all perfect anagrams of a word\nfullScore: displays the maximum score of a board in Game Pigeon Anagrams\n6Score: displays the maximum score of a 6-letter board using only 5s and 6s\n7Score: displays the maximum score of a 7-letter board using only 6s and 7s\nallWords: displays every valid word that can be made from a word\nallCombos: displays every combo that exists in a word, excluding the word's own combo")
+        elif mList[1].upper == "HELP":
+            await message.channel.send("***!ana [command] [word]***"
+            + "\n**combo**: displays all perfect anagrams of a word"
+            + "\n**fullScore**: displays the maximum score of a board in Game Pigeon Anagrams"
+            + "\n**6Score**: displays the maximum score of a 6-letter board using only 5s and 6s"
+            + "\n**7Score**: displays the maximum score of a 7-letter board using only 6s and 7s"
+            + "\n**allWords**: displays every valid word that can be made from a word"
+            + "\n**allCombos**: displays every combo that exists in a word, excluding the word's own combo")
 
 client.run(os.getenv("TOKEN"))
