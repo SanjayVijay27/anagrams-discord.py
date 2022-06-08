@@ -1,0 +1,6 @@
+word count for combos in allCombos
+score for words of other lengths, determined by user
+make combo dictionary to speed up allCombos
+censor/remove slurs
+wordCount: returns word count of each word length for a word
+format hundreds, thousands, and millions better
