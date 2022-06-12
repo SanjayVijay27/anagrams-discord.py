@@ -10,6 +10,17 @@ for i in dictionary2:
         anagramsDict.append(s)
         s = ""
 
+dictionary = open("combo_words.txt")
+dictionary1 = dictionary.read()
+comboDict = []
+s = ""
+for i in dictionary1:
+    if i != "n" and i != '\n':
+        s = s + i
+    elif i == "\n":
+        anagramsDict.append(s)
+        s = ""
+
 def anagram(board, length):
     words = []
     for i in anagramsDict:
@@ -40,9 +51,8 @@ def anagramExact(board, length):
 
 def anagramFirst(board):
     word = ""
-    broke = False
-    for i in anagramsDict:
-        if len(i) <= len(board.upper()) and len(i) == len(board):
+    for i in comboDict:
+        if len(i) == len(board):
             wordCopy = list(i)
             boardCopy = list(board.upper())
             while len(wordCopy) > 0 and wordCopy[0] in boardCopy:
@@ -51,10 +61,7 @@ def anagramFirst(board):
                 boardCopy.remove(commonLetter)
                 if len(wordCopy) == 0:
                     word = i
-                    broke = True
-        if broke:
-            break
-    return word
+                    return word
 
 def anagramSort(board):
     summary = ""
@@ -68,8 +75,8 @@ def anagramSort(board):
 
 def findCombo(board, length):
     words = []
-    for i in anagramsDict:
-        if len(i) <= len(board.upper()) - 1 and len(i) == length:
+    for i in comboDict:
+        if len(i) == length:
             wordCopy = list(i)
             boardCopy = list(board.upper())
             while len(wordCopy) > 0 and wordCopy[0] in boardCopy:
@@ -77,8 +84,7 @@ def findCombo(board, length):
                 wordCopy.remove(commonLetter)
                 boardCopy.remove(commonLetter)
                 if len(wordCopy) == 0:
-                    if anagramFirst(i) not in words:
-                        words.append(i)
+                    words.append(i)
     return words
 
 def anaScoreFull(board):
