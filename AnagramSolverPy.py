@@ -160,42 +160,38 @@ async def on_message(message):
                 await message.channel.send("That word is not 7 letters long.")
         
         elif mList[1].upper() == "ALLWORDS":
-            for i in range(3, len(mList[2]) + 1):
+            string = ""
+            for i in range(3, len(mList[2])):
                 anas = anagramExact(mList[2], i)
-                splits = int(len(str(anas)) / 2000) + 1
-                msgList = []
-                last = 0
-                for j in range(splits):
-                    msgList.append(anas[j * len(anas) // splits:len(anas) // splits * (1 + j)])
-                    if j == splits - 1:
-                        last = len(anas) // splits * (1 + j)
-                for j in anas[last:-1]:
-                    msgList[-1].append(j)
-                await message.channel.send("**" + str(i) + " letter words**: ")
-                if len(msgList[0]) == 0:
-                    await message.channel.send("None")
+                string += str(i) + " letter words: \n"
+                if len(anas) == 0:
+                    string += "None\n"
                 else:
-                    for j in msgList:
-                        await message.channel.send(j)
+                    string += str(anas) + "\n\n"
+            outputNewFile = open('output.txt', 'w')
+            outputNewFile.write(string)
+            outputNewFile.close()
+            await message.channel.send(file = discord.File("output.txt"))
+            outputNewFile = open("output.txt","r+")
+            outputNewFile.truncate(0)
+            outputNewFile.close()
         
         elif mList[1].upper() == "ALLCOMBOS":
+            string = ""
             for i in range(3, len(mList[2])):
                 anas = findCombo(mList[2], i)
-                splits = int(len(str(anas)) / 2000) + 1
-                msgList = []
-                last = 0
-                for j in range(splits):
-                    msgList.append(anas[j * len(anas) // splits:len(anas) // splits * (1 + j)])
-                    if j == splits - 1:
-                        last = len(anas) // splits * (1 + j)
-                for j in anas[last:-1]:
-                    msgList[-1].append(j)
-                await message.channel.send("**" + str(i) + " letter combos**: ")
-                if len(msgList[0]) == 0:
-                    await message.channel.send("None")
+                string += str(i) + " letter combos: \n"
+                if len(anas) == 0:
+                    string += "None\n"
                 else:
-                    for j in msgList:
-                        await message.channel.send(j)
+                    string += str(anas) + "\n\n"
+            outputNewFile = open('output.txt', 'w')
+            outputNewFile.write(string)
+            outputNewFile.close()
+            await message.channel.send(file = discord.File("output.txt"))
+            outputNewFile = open("output.txt","r+")
+            outputNewFile.truncate(0)
+            outputNewFile.close()
         
         elif mList[1].upper() == "HELP":
             await message.channel.send("***!ana [command] [word]***"
