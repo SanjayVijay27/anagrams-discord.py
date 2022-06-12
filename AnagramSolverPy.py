@@ -18,7 +18,7 @@ for i in dictionary1:
     if i != "n" and i != '\n':
         s = s + i
     elif i == "\n":
-        anagramsDict.append(s)
+        comboDict.append(s)
         s = ""
 
 def anagram(board, length):
