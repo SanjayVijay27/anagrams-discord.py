@@ -160,7 +160,7 @@ async def on_message(message):
                 await message.channel.send("That word is not 7 letters long.")
         
         elif mList[1].upper() == "ALLWORDS":
-            string = "Remember to expand the file to see every word\n"
+            string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
             for i in range(3, len(mList[2]) + 1):
                 anas = anagramExact(mList[2], i)
                 string += str(i) + " letter words: \n"
@@ -177,7 +177,7 @@ async def on_message(message):
             outputNewFile.close()
         
         elif mList[1].upper() == "ALLCOMBOS":
-            string = "Remember to expand the file to see every combo\n"
+            string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
             for i in range(3, len(mList[2])):
                 anas = findCombo(mList[2], i)
                 string += str(i) + " letter combos: \n"
