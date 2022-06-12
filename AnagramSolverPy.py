@@ -161,7 +161,7 @@ async def on_message(message):
         
         elif mList[1].upper() == "ALLWORDS":
             string = ""
-            for i in range(3, len(mList[2])):
+            for i in range(3, len(mList[2]) + 1):
                 anas = anagramExact(mList[2], i)
                 string += str(i) + " letter words: \n"
                 if len(anas) == 0:
