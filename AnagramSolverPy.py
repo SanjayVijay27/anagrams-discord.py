@@ -74,7 +74,7 @@ def anagramSort(board):
     return summary
 
 def findCombo(board, length):
-    words = []
+    words = {}
     for i in comboDict:
         if len(i) == length:
             wordCopy = list(i)
@@ -84,7 +84,7 @@ def findCombo(board, length):
                 wordCopy.remove(commonLetter)
                 boardCopy.remove(commonLetter)
                 if len(wordCopy) == 0:
-                    words.append(i)
+                    words[i] = len(anagramExact(i, len(i)))
     return words
 
 def anaScoreFull(board):
