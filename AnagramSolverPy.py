@@ -21,6 +21,17 @@ for i in dictionary1:
         comboDict.append(s)
         s = ""
 
+def formatScore(num):
+    if num < 1000:
+        score = str(num)
+    elif num < 1000000:
+        score = str(num / 1000.0) + "k"
+    elif num < 1000000000:
+        score = str(num / 1000000.0) + "M"
+    else:
+        score = "a really big number (this shouldn't even happen; contact speedster#0012 if it does)"
+    return score
+
 def anagram(board, length):
     words = []
     for i in anagramsDict:
@@ -151,17 +162,17 @@ async def on_message(message):
                     await message.channel.send("NUTDEALER\nshhhhhhhh")
 
         elif mList[1].upper() == "FULLSCORE":
-            await message.channel.send(str(anaScoreFull(mList[2]) / 1000.0) + "k")
+            await message.channel.send(formatScore(anaScoreFull(mList[2])))
         
         elif mList[1].upper() == "6SCORE":
             if len(mList[2]) == 6:
-                await message.channel.send(str(anaScore6(mList[2]) / 1000.0) + "k")
+                await message.channel.send(formatScore(anaScore6(mList[2])))
             else:
                 await message.channel.send("That word is not 6 letters long.")
         
         elif mList[1].upper() == "7SCORE":
             if len(mList[2]) == 7:
-                await message.channel.send(str(anaScore7(mList[2]) / 1000.0) + "k")
+                await message.channel.send(formatScore(anaScore7(mList[2])))
             else:
                 await message.channel.send("That word is not 7 letters long.")
         
@@ -206,6 +217,6 @@ async def on_message(message):
             + "\n**6Score**: displays the maximum score of a 6-letter board using only 5s and 6s"
             + "\n**7Score**: displays the maximum score of a 7-letter board using only 6s and 7s"
             + "\n**allWords**: displays every valid word that can be made from a word"
-            + "\n**allCombos**: displays every combo that exists in a word, excluding the word's own combo")
+            + "\n**allCombos**: displays every combo that exists in a word along with their word counts, excluding the word's own combo")
 
 client.run(os.getenv("TOKEN"))

@@ -1,5 +1,3 @@
-word count for combos in allCombos
 score for words of other lengths, determined by user
 censor/remove slurs
 wordCount: returns word count of each word length for a word
-format hundreds, thousands, and millions better
