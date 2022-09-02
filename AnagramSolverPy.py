@@ -140,83 +140,81 @@ import os
 load_dotenv()
 
 import discord
-client = discord.Client()
+bot = discord.Bot()
 
-@client.event
+@bot.event
 async def on_ready():
-    print("Successfully logged in as " + str(client.user))
+    print("Successfully logged in as " + str(bot.user))
 
-@client.event
-async def on_message(message):
-    mList = message.content.split()
-    if message.author == client.user:
-        return
-    
-    if mList[0] == "!ana":
-        if mList[1].upper() == "COMBO":
-            if len(anagram(mList[2], len(mList[2]))) == 0:
-                await message.channel.send("That word has no valid anagrams.")
-            else:
-                await message.channel.send(anagram(mList[2], len(mList[2])))
-                if anagram(mList[2], len(mList[2]))[0] == "UNALERTED":
-                    await message.channel.send("NUTDEALER\nshhhhhhhh")
+@bot.command(name="combo", description="displays all perfect anagrams of a word")
+async def combo(ctx, word):
+    if len(anagram(word, len(word))) == 0:
+        await ctx.respond("That word has no valid anagrams.")
+    else:
+        await ctx.respond(anagram(word, len(word)))
 
-        elif mList[1].upper() == "FULLSCORE":
-            await message.channel.send(formatScore(anaScoreFull(mList[2])))
-        
-        elif mList[1].upper() == "6SCORE":
-            if len(mList[2]) == 6:
-                await message.channel.send(formatScore(anaScore6(mList[2])))
-            else:
-                await message.channel.send("That word is not 6 letters long.")
-        
-        elif mList[1].upper() == "7SCORE":
-            if len(mList[2]) == 7:
-                await message.channel.send(formatScore(anaScore7(mList[2])))
-            else:
-                await message.channel.send("That word is not 7 letters long.")
-        
-        elif mList[1].upper() == "ALLWORDS":
-            string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
-            for i in range(3, len(mList[2]) + 1):
-                anas = anagramExact(mList[2], i)
-                string += str(i) + " letter words: \n"
-                if len(anas) == 0:
-                    string += "None\n"
-                else:
-                    string += str(anas) + "\n\n"
-            outputNewFile = open('output.txt', 'w')
-            outputNewFile.write(string)
-            outputNewFile.close()
-            await message.channel.send(file = discord.File("output.txt"))
-            outputNewFile = open("output.txt","r+")
-            outputNewFile.truncate(0)
-            outputNewFile.close()
-        
-        elif mList[1].upper() == "ALLCOMBOS":
-            string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
-            for i in range(3, len(mList[2])):
-                anas = findCombo(mList[2], i)
-                string += str(i) + " letter combos: \n"
-                if len(anas) == 0:
-                    string += "None\n"
-                else:
-                    string += str(anas) + "\n\n"
-            outputNewFile = open('output.txt', 'w')
-            outputNewFile.write(string)
-            outputNewFile.close()
-            await message.channel.send(file = discord.File("output.txt"))
-            outputNewFile = open("output.txt","r+")
-            outputNewFile.truncate(0)
-            outputNewFile.close()
-        
-        elif mList[1].upper() == "HELP":
-            await message.channel.send("***!ana [command] [word]***"
-            + "\n**combo**: displays all perfect anagrams of a word"
-            + "\n**fullScore**: displays the maximum score of a board in Game Pigeon Anagrams"
-            + "\n**6Score**: displays the maximum score of a 6-letter board using only 5s and 6s"
-            + "\n**7Score**: displays the maximum score of a 7-letter board using only 6s and 7s"
-            + "\n**allWords**: displays every valid word that can be made from a word"
-            + "\n**allCombos**: displays every combo that exists in a word along with their word counts, excluding the word's own combo")
+@bot.command(name="full_score", description="displays the maximum score of a board in Game Pigeon Anagrams")
+async def full_score(ctx, word):
+    await ctx.respond(formatScore(anaScoreFull(word)))
 
-client.run(os.getenv("TOKEN"))
+@bot.command(name="six_score", description="displays the maximum score of a 6-letter board using only 5s and 6s")
+async def six_score(ctx, word):
+    if len(word) == 6:
+        await ctx.respond(formatScore(anaScore6(word)))
+    else:
+        await ctx.respond("That word is not 6 letters long.")
+
+@bot.command(name="seven_score", description="displays the maximum score of a 7-letter board using only 5s and 6s")
+async def seven_score(ctx, word):
+    if len(word) == 7:
+        await ctx.respond(formatScore(anaScore7(word)))
+    else:
+        await ctx.respond("That word is not 7 letters long.")
+
+@bot.command(name="all_words", description="displays every valid word that can be made from a word")
+async def all_words(ctx, word):
+    string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
+    for i in range(3, len(word) + 1):
+        anas = anagramExact(word, i)
+        string += str(i) + " letter words: \n"
+        if len(anas) == 0:
+            string += "None\n"
+        else:
+            string += str(anas) + "\n\n"
+    outputNewFile = open('output.txt', 'w')
+    outputNewFile.write(string)
+    outputNewFile.close()
+    await ctx.respond(file = discord.File("output.txt"))
+    outputNewFile = open("output.txt","r+")
+    outputNewFile.truncate(0)
+    outputNewFile.close()
+
+@bot.command(name="all_combos", description="displays every combo that exists in a word with their word counts, excluding the word's own combo")
+async def all_combos(ctx, word):
+    string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
+    for i in range(3, len(word)):
+        anas = findCombo(word, i)
+        string += str(i) + " letter combos: \n"
+        if len(anas) == 0:
+            string += "None\n"
+        else:
+            string += str(anas) + "\n\n"
+    outputNewFile = open('output.txt', 'w')
+    outputNewFile.write(string)
+    outputNewFile.close()
+    await ctx.respond(file = discord.File("output.txt"))
+    outputNewFile = open("output.txt","r+")
+    outputNewFile.truncate(0)
+    outputNewFile.close()
+
+@bot.command(name="help", description="displays every command and their descriptions")
+async def help(ctx):
+    await ctx.respond("***Use as Discord Slash Commands***"
+        + "\n**combo**: displays all perfect anagrams of a word"
+        + "\n**full_score**: displays the maximum score of a board in Game Pigeon Anagrams"
+        + "\n**six_score**: displays the maximum score of a 6-letter board using only 5s and 6s"
+        + "\n**seven_score**: displays the maximum score of a 7-letter board using only 6s and 7s"
+        + "\n**all_words**: displays every valid word that can be made from a word"
+        + "\n**all_combos**: displays every combo that exists in a word with their word counts, excluding the word's own combo")
+
+bot.run(os.getenv("TOKEN"))
