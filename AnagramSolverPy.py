@@ -173,6 +173,7 @@ async def seven_score(ctx, word):
 
 @bot.command(name="all_words", description="displays every valid word that can be made from a word")
 async def all_words(ctx, word):
+    await ctx.defer()
     string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
     for i in range(3, len(word) + 1):
         anas = anagramExact(word, i)
@@ -191,6 +192,7 @@ async def all_words(ctx, word):
 
 @bot.command(name="all_combos", description="displays every combo that exists in a word with their word counts, excluding the word's own combo")
 async def all_combos(ctx, word):
+    await ctx.defer()
     string = "Remember to expand the file to see more\nYou may have to download the file if it is too large for Discord to fully display\n"
     for i in range(3, len(word)):
         anas = findCombo(word, i)
